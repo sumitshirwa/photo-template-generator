@@ -12,50 +12,50 @@ const templateDefinitions = [
   {
     id: "Template 1",
     name: "Template 1",
-    image: "/public/templates/Template1.png",
-    icon: "/public/templates/Template1.png",
+    image: "/templates/Template1.png",
+    icon: "/templates/Template1.png",
   },
 
   {
     id: "Template 2 ",
     name: "Template 2",
-    image: "/public/templates/Template2.png",
-    icon: "/public/templates/Template2.png",
+    image: "/templates/Template2.png",
+    icon: "/templates/Template2.png",
   },
 
   {
     id: "Template 3",
     name: "Template 3",
-    image: "/public/templates/Template3.png",
-    icon: "/public/templates/Template3.png",
+    image: "/templates/Template3.png",
+    icon: "/templates/Template3.png",
   },
 
   {
     id: "Template 4",
     name: "Template 4",
-    image: "/public/templates/Template4.png",
-    icon: "/public/templates/Template4.png",
+    image: "/templates/Template4.png",
+    icon: "/templates/Template4.png",
   },
 
   {
     id: "Template 5",
     name: "Template 5",
-    image: "/public/templates/Template5.png",
-    icon: "/public/templates/Template5.png",
+    image: "/templates/Template5.png",
+    icon: "/templates/Template5.png",
   },
 
   {
     id: "Template 6",
     name: "Template 6",
-    image: "/public/templates/Template6.png",
-    icon: "/public/templates/Template6.png",
+    image: "/templates/Template6.png",
+    icon: "/templates/Template6.png",
   },
 
   {
     id: "Template 7",
     name: "Template 7",
-    image: "/public/templates/Template7.png",
-    icon: "/public/templates/Template7.png",
+    image: "/templates/Template7.png",
+    icon: "/templates/Template7.png",
   },
 
 ]
