@@ -25,15 +25,15 @@ const templateDefinitions = [
   {
     id: "Template 3",
     name: "Template 3",
-    image: "/templates/Template3.png",
-    icon: "/templates/Template3.png",
+    image: "/templates/template3.png",
+    icon: "/templates/template3.png",
   },
 
   {
     id: "Template 4",
     name: "Template 4",
-    image: "/templates/Template4.png",
-    icon: "/templates/Template4.png",
+    image: "/templates/template4.png",
+    icon: "/templates/template4.png",
   },
 ];
 

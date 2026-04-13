@@ -2,13 +2,11 @@ import { useRef, useCallback, useEffect, useState } from 'react';
 import { Canvas as FabricCanvas, FabricImage } from 'fabric';
 import { getFrameDataURL, CANVAS_DIMENSIONS } from '../data/templates';
 
-/* RESPONSIVE MOBILE SAFE SIZE */
+/* Responsive canvas size — clamps to CANVAS_DIMENSIONS on desktop */
 const getResponsiveCanvasSize = () => {
   const width = window.innerWidth;
-
   if (width < 480) return Math.min(width - 40, CANVAS_DIMENSIONS);
   if (width < 768) return Math.min(width - 60, CANVAS_DIMENSIONS);
-
   return CANVAS_DIMENSIONS;
 };
 
@@ -25,7 +23,7 @@ export function useCanvas() {
   const [rotation, setRotation] = useState(0);
   const [canvasSize, setCanvasSize] = useState(getResponsiveCanvasSize());
 
-  /* INIT */
+  /* ────────── INIT ────────── */
   const initCanvas = useCallback((canvasEl) => {
     if (!canvasEl || fabricRef.current) return;
 
@@ -41,18 +39,17 @@ export function useCanvas() {
 
     canvasRef.current = canvasEl;
     fabricRef.current = fc;
-
     setCanvasSize(size);
     setIsReady(true);
 
-    // Return cleanup for CanvasEditor to use
+    // Return cleanup for CanvasEditor to call on unmount
     return () => {
       fc.dispose();
       fabricRef.current = null;
     };
   }, []);
 
-  /* MOBILE RESPONSIVE RESIZE */
+  /* ────────── RESPONSIVE RESIZE (debounced) ────────── */
   useEffect(() => {
     let timeout;
 
@@ -65,21 +62,16 @@ export function useCanvas() {
 
         const newSize = getResponsiveCanvasSize();
 
-        fc.setDimensions({
-          width: newSize,
-          height: newSize,
-        });
-
+        fc.setDimensions({ width: newSize, height: newSize });
         setCanvasSize(newSize);
 
+        // Rescale user image
         if (userImageRef.current) {
           const img = userImageRef.current;
-
           const baseScale = Math.max(
             newSize / img.width,
-            newSize / img.height
+            newSize / img.height,
           );
-
           img.set({
             scaleX: baseScale * (zoom / 100),
             scaleY: baseScale * (zoom / 100),
@@ -88,9 +80,9 @@ export function useCanvas() {
           });
         }
 
+        // Rescale template overlay
         if (templateObjRef.current) {
           const frame = templateObjRef.current;
-
           frame.set({
             scaleX: newSize / frame.width,
             scaleY: newSize / frame.height,
@@ -109,11 +101,12 @@ export function useCanvas() {
     };
   }, [zoom]);
 
-  /* USER IMAGE */
+  /* ────────── ADD USER IMAGE ────────── */
   const addUserImage = useCallback(async (dataURL) => {
     const fc = fabricRef.current;
     if (!fc) return;
 
+    // Remove existing user image
     if (userImageRef.current) {
       fc.remove(userImageRef.current);
     }
@@ -122,7 +115,7 @@ export function useCanvas() {
 
     const baseScale = Math.max(
       canvasSize / img.width,
-      canvasSize / img.height
+      canvasSize / img.height,
     );
 
     img.set({
@@ -132,10 +125,9 @@ export function useCanvas() {
       top: canvasSize / 2,
       originX: 'center',
       originY: 'center',
-
+      selectable: true,
       cornerColor: '#8b5cf6',
       borderColor: '#8b5cf6',
-
       cornerSize: 10,
       transparentCorners: false,
     });
@@ -144,10 +136,12 @@ export function useCanvas() {
 
     fc.add(img);
 
+    // Ensure template frame stays on top
     if (templateObjRef.current) {
       fc.bringObjectToFront(templateObjRef.current);
     }
 
+    fc.setActiveObject(img);
     fc.renderAll();
 
     setHasImage(true);
@@ -155,11 +149,12 @@ export function useCanvas() {
     setRotation(0);
   }, [canvasSize]);
 
-  /* TEMPLATE */
+  /* ────────── SET TEMPLATE ────────── */
   const setTemplate = useCallback(async (templateId) => {
     const fc = fabricRef.current;
     if (!fc) return;
 
+    // Remove existing template
     if (templateObjRef.current) {
       fc.remove(templateObjRef.current);
     }
@@ -176,7 +171,6 @@ export function useCanvas() {
       top: 0,
       scaleX: canvasSize / frameImg.width,
       scaleY: canvasSize / frameImg.height,
-
       selectable: false,
       evented: false,
     });
@@ -185,20 +179,18 @@ export function useCanvas() {
 
     fc.add(frameImg);
     fc.bringObjectToFront(frameImg);
-
     fc.renderAll();
   }, [canvasSize]);
 
-  /* ZOOM */
+  /* ────────── ZOOM ────────── */
   const applyZoom = useCallback((value) => {
     const img = userImageRef.current;
     const fc = fabricRef.current;
-
     if (!img || !fc) return;
 
     const baseScale = Math.max(
       canvasSize / img.width,
-      canvasSize / img.height
+      canvasSize / img.height,
     );
 
     img.set({
@@ -210,34 +202,36 @@ export function useCanvas() {
     setZoom(value);
   }, [canvasSize]);
 
-  /* ROTATION */
+  /* ────────── ROTATION ────────── */
   const applyRotation = useCallback((angle) => {
-    if (!userImageRef.current) return;
+    const img = userImageRef.current;
+    const fc = fabricRef.current;
+    if (!img || !fc) return;
 
-    userImageRef.current.set({ angle });
-
-    fabricRef.current?.renderAll();
-
+    img.set({ angle });
+    fc.renderAll();
     setRotation(angle);
   }, []);
 
-  /* EXPORT – accepts format ('png' | 'jpeg') */
+  /* ────────── EXPORT (supports 'png' | 'jpeg') ────────── */
   const exportAsDataURL = useCallback((format = 'png') => {
     const fc = fabricRef.current;
     if (!fc) return null;
 
+    // Hide selection handles before export
+    fc.discardActiveObject();
+
     return fc.toDataURL({
-      format: format,
+      format,
       multiplier: format === 'jpeg' ? 1.2 : 1.5,
     });
   }, []);
 
-  /* RESET */
+  /* ────────── RESET ────────── */
   const reset = useCallback(() => {
     const fc = fabricRef.current;
     if (!fc) return;
 
-    // Remove user image
     if (userImageRef.current) {
       fc.remove(userImageRef.current);
       userImageRef.current = null;
@@ -247,7 +241,7 @@ export function useCanvas() {
     setZoom(100);
     setRotation(0);
 
-    // Re-apply current template
+    // Re-apply current template so the frame stays visible
     if (currentTemplateIdRef.current) {
       setTemplate(currentTemplateIdRef.current);
     }
@@ -262,13 +256,10 @@ export function useCanvas() {
     hasImage,
     zoom,
     rotation,
-
     addUserImage,
     setTemplate,
-
     applyZoom,
     applyRotation,
-
     exportAsDataURL,
     reset,
   };

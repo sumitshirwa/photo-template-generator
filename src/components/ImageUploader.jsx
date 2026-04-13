@@ -2,7 +2,7 @@
  * ImageUploader - Drag-and-drop upload zone with file input fallback.
  * Glassmorphism-styled with animated border on drag-over.
  */
-import React, { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import GradientButton from './ui/GradientButton';
 
 const ImageUploader = ({ onImageUpload, hasImage }) => {

@@ -3,7 +3,7 @@
  * Renders the Fabric.js canvas inside a glassmorphism container
  * with responsive sizing.
  */
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 const CanvasEditor = ({ initCanvas }) => {
   const containerRef = useRef(null);

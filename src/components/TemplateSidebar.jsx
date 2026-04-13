@@ -2,7 +2,7 @@
  * TemplateSidebar - Horizontal scrolling gallery of template frame thumbnails.
  * Responsive: horizontal on mobile, vertical sidebar on desktop.
  */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { templates, getThumbnailDataURL } from '../data/templates';
 
 const TemplateSidebar = ({ activeTemplate, onSelectTemplate }) => {
@@ -45,7 +45,7 @@ const TemplateSidebar = ({ activeTemplate, onSelectTemplate }) => {
                   loading="lazy"
                 />
               ) : (
-                <span className="text-2xl">{tpl.icon}</span>
+                <span className="text-2xl opacity-40">🖼️</span>
               )}
             </div>
             <span className="text-xs font-medium" style={{ color: activeTemplate === tpl.id ? 'var(--accent-primary)' : 'var(--text-secondary)' }}>

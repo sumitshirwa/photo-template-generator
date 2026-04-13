@@ -2,7 +2,6 @@
  * Navbar - App header with logo and title.
  * Glassmorphism-styled sticky top bar.
  */
-import React from 'react';
 
 const Navbar = () => {
   return (

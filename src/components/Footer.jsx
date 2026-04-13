@@ -1,7 +1,6 @@
 /**
  * Footer - Minimal professional footer.
  */
-import React from 'react';
 
 const Footer = () => {
   return (

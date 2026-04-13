@@ -2,7 +2,7 @@
  * ControlPanel - Bottom controls for zoom, rotate, export, download, share, and reset.
  * Glassmorphism styled with gradient buttons.
  */
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import GradientButton from './ui/GradientButton';
 
 const ControlPanel = ({
