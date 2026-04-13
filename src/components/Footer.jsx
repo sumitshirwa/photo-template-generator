@@ -12,7 +12,7 @@ const Footer = memo(() => {
         <span>✨</span>
         <span>Photo Template Generator &copy; {YEAR}</span>
         <span className="mx-1 opacity-30">|</span>
-        <span>Crafted with precision by sumit shirwa</span>
+        <span>Crafted by Sumit Shirwa</span>
       </div>
     </footer>
   );
