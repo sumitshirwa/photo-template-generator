@@ -2,8 +2,9 @@
  * Navbar - App header with logo and title.
  * Glassmorphism-styled sticky top bar.
  */
+import { memo } from 'react';
 
-const Navbar = () => {
+const Navbar = memo(() => {
   return (
     <nav className="glass sticky top-0 z-50 px-4 sm:px-6 py-3 flex items-center gap-3 animate-fade-in-up"
          style={{ borderRadius: 0, borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}>
@@ -28,6 +29,8 @@ const Navbar = () => {
       </div>
     </nav>
   );
-};
+});
+
+Navbar.displayName = 'Navbar';
 
 export default Navbar;

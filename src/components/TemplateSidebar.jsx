@@ -2,21 +2,10 @@
  * TemplateSidebar - Horizontal scrolling gallery of template frame thumbnails.
  * Responsive: horizontal on mobile, vertical sidebar on desktop.
  */
-import { useEffect, useState } from 'react';
-import { templates, getThumbnailDataURL } from '../data/templates';
+import { memo } from 'react';
+import { templates, getFrameDataURL } from '../data/templates';
 
-const TemplateSidebar = ({ activeTemplate, onSelectTemplate }) => {
-  const [thumbnails, setThumbnails] = useState({});
-
-  // Generate thumbnails on mount
-  useEffect(() => {
-    const thumbs = {};
-    templates.forEach((tpl) => {
-      thumbs[tpl.id] = getThumbnailDataURL(tpl.id);
-    });
-    setThumbnails(thumbs);
-  }, []);
-
+const TemplateSidebar = memo(({ activeTemplate, onSelectTemplate }) => {
   return (
     <div className="w-full animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
       <h2 className="text-sm font-semibold mb-3 px-1 flex items-center gap-2"
@@ -36,17 +25,13 @@ const TemplateSidebar = ({ activeTemplate, onSelectTemplate }) => {
           >
             <div className="w-[72px] h-[72px] lg:w-[88px] lg:h-[88px] rounded-lg overflow-hidden flex items-center justify-center"
                  style={{ background: 'rgba(0,0,0,0.03)' }}>
-              {thumbnails[tpl.id] ? (
-                <img
-                  src={thumbnails[tpl.id]}
-                  alt={tpl.name}
-                  className="w-full h-full object-contain"
-                  draggable={false}
-                  loading="lazy"
-                />
-              ) : (
-                <span className="text-2xl opacity-40">🖼️</span>
-              )}
+              <img
+                src={getFrameDataURL(tpl.id)}
+                alt={tpl.name}
+                className="w-full h-full object-contain"
+                draggable={false}
+                loading="lazy"
+              />
             </div>
             <span className="text-xs font-medium" style={{ color: activeTemplate === tpl.id ? 'var(--accent-primary)' : 'var(--text-secondary)' }}>
               {tpl.name}
@@ -56,6 +41,8 @@ const TemplateSidebar = ({ activeTemplate, onSelectTemplate }) => {
       </div>
     </div>
   );
-};
+});
+
+TemplateSidebar.displayName = 'TemplateSidebar';
 
 export default TemplateSidebar;

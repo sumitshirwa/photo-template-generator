@@ -3,9 +3,9 @@
  * Renders the Fabric.js canvas inside a glassmorphism container
  * with responsive sizing.
  */
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
-const CanvasEditor = ({ initCanvas }) => {
+const CanvasEditor = memo(({ initCanvas }) => {
   const containerRef = useRef(null);
   const canvasElRef = useRef(null);
 
@@ -28,19 +28,16 @@ const CanvasEditor = ({ initCanvas }) => {
       className="canvas-container-wrapper flex items-center justify-center animate-fade-in-up"
       style={{ animationDelay: '0.15s' }}
     >
-      <div className="relative" style={{ maxWidth: '100%', overflow: 'hidden' }}>
+      <div className="canvas-inner-wrapper">
         <canvas
           ref={canvasElRef}
           id="photo-canvas"
-          style={{
-            maxWidth: '100%',
-            height: 'auto',
-            display: 'block',
-          }}
         />
       </div>
     </div>
   );
-};
+});
+
+CanvasEditor.displayName = 'CanvasEditor';
 
 export default CanvasEditor;

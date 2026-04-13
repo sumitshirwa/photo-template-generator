@@ -37,17 +37,8 @@ const templateDefinitions = [
   },
 ];
 
+/** Get the full-size frame image URL for a template */
 export function getFrameDataURL(templateId) {
-  const template = templateDefinitions.find(
-    (t) => t.id === templateId
-  );
-
-  return template ? template.image : null;
-}
-
-/* ---------------- GET THUMBNAIL ---------------- */
-
-export function getThumbnailDataURL(templateId) {
   const template = templateDefinitions.find(
     (t) => t.id === templateId
   );

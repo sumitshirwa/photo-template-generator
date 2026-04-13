@@ -54,14 +54,12 @@ const ControlPanel = ({
           text: 'Check out my framed photo!',
         });
       } else {
-        // Fallback: show user-friendly message instead of copying raw data URL
-        setShowSuccess(true);
-        setTimeout(() => setShowSuccess(false), 2500);
         alert('Sharing is not supported on this browser. Please use the Download button instead.');
       }
     } catch (err) {
+      // Silently ignore user-cancelled shares (AbortError)
       if (err.name !== 'AbortError') {
-        console.error('Share failed:', err);
+        // Share failed — non-critical, no console output
       }
     }
   }, [onExport]);

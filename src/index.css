@@ -115,6 +115,11 @@ body::after {
     0 20px 50px rgba(0, 0, 0, .12);
 }
 
+/* Disable CSS hover-lift inside areas with JS parallax */
+.no-hover-lift .glass:hover {
+  transform: none;
+}
+
 /* GLASS SUBTLE (footer etc) */
 .glass-subtle {
   background: rgba(255, 255, 255, .18);
@@ -247,6 +252,25 @@ body::after {
     0 12px 32px rgba(0, 0, 0, .08);
 }
 
+.canvas-inner-wrapper {
+  display: inline-block;
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  line-height: 0;
+}
+
+/* Fabric.js auto-generated wrapper */
+.canvas-inner-wrapper .canvas-container {
+  max-width: 100% !important;
+}
+
+.canvas-inner-wrapper canvas {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
 /* ================= SLIDER ================= */
 .slider-custom {
   appearance: none;
@@ -279,7 +303,7 @@ body::after {
 
 /* ================= UPLOAD ZONE ================= */
 .upload-zone {
-  padding: 30px;
+  padding: 20px;
   border-radius: 28px;
   border: 2px dashed rgba(0, 0, 0, .12);
   background: rgba(255, 255, 255, .15);
@@ -414,8 +438,12 @@ body::after {
     border-radius: 20px;
   }
 
+  .canvas-inner-wrapper {
+    border-radius: 12px;
+  }
+
   .upload-zone {
-    padding: 20px;
+    padding: 16px;
     border-radius: 20px;
   }
 
@@ -436,5 +464,9 @@ body::after {
   .canvas-container-wrapper {
     padding: 6px;
     border-radius: 16px;
+  }
+
+  .canvas-inner-wrapper {
+    border-radius: 10px;
   }
 }

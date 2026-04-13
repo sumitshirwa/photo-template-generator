@@ -68,7 +68,7 @@ const App = () => {
       });
     };
 
-    const handleMouseLeave = (e) => {
+    const handleMouseLeave = () => {
       const cards = mainEl.querySelectorAll('.glass');
       cards.forEach((card) => {
         card.style.transform = '';
@@ -112,7 +112,7 @@ const App = () => {
 
         <main
           ref={mainRef}
-          className="flex-1 flex flex-col lg:flex-row gap-4 sm:gap-6 p-4 sm:p-6 max-w-7xl mx-auto w-full"
+          className="no-hover-lift flex-1 flex flex-col lg:flex-row gap-4 sm:gap-6 p-4 sm:p-6 max-w-7xl mx-auto w-full"
         >
           {/* Sidebar */}
           <aside className="lg:w-[160px] flex-shrink-0">
@@ -136,7 +136,7 @@ const App = () => {
             {/* Canvas */}
             <CanvasEditor initCanvas={initCanvas} />
 
-            {/* Controls — NO glass wrapper here, ControlPanel has its own */}
+            {/* Controls */}
             <ControlPanel
               hasImage={hasImage}
               zoom={zoom}

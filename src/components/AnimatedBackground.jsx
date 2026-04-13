@@ -2,8 +2,9 @@
  * AnimatedBackground - Renders floating gradient aurora blobs
  * that create a cinematic ambient glow effect behind all content.
  */
+import { memo } from 'react';
 
-const AnimatedBackground = () => {
+const AnimatedBackground = memo(() => {
   return (
     <div className="aurora-bg" aria-hidden="true">
       <div className="aurora-blob aurora-blob-1" />
@@ -12,6 +13,8 @@ const AnimatedBackground = () => {
       <div className="aurora-blob aurora-blob-4" />
     </div>
   );
-};
+});
+
+AnimatedBackground.displayName = 'AnimatedBackground';
 
 export default AnimatedBackground;
