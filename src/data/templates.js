@@ -1,26 +1,25 @@
 /*
   PNG Template System
-  Just add PNG templates inside /public/templates/
+  Add PNG templates inside /public/templates/
 */
 
 export const CANVAS_DIMENSIONS = 600;
 
-
 /* ---------------- TEMPLATE LIST ---------------- */
 
 const templateDefinitions = [
+
   {
     id: "Template 1",
     name: "Template 1",
-    image: "/templates/Template1.png",
-    icon: "/templates/Template1.png",
+    image: "/templates/template1.png",
+    icon: "/templates/template1.png",
   },
-
   {
-    id: "Template 2 ",
+    id: "Template 2",
     name: "Template 2",
-    image: "/templates/Template2.png",
-    icon: "/templates/Template2.png",
+    image: "/templates/template2.png",
+    icon: "/templates/template2.png",
   },
 
   {
@@ -36,29 +35,7 @@ const templateDefinitions = [
     image: "/templates/Template4.png",
     icon: "/templates/Template4.png",
   },
-
-  {
-    id: "Template 5",
-    name: "Template 5",
-    image: "/templates/Template5.png",
-    icon: "/templates/Template5.png",
-  },
-
-  {
-    id: "Template 6",
-    name: "Template 6",
-    image: "/templates/Template6.png",
-    icon: "/templates/Template6.png",
-  },
-
-  {
-    id: "Template 7",
-    name: "Template 7",
-    image: "/templates/Template7.png",
-    icon: "/templates/Template7.png",
-  },
-
-]
+];
 
 export function getFrameDataURL(templateId) {
   const template = templateDefinitions.find(
@@ -67,7 +44,6 @@ export function getFrameDataURL(templateId) {
 
   return template ? template.image : null;
 }
-
 
 /* ---------------- GET THUMBNAIL ---------------- */
 
@@ -78,7 +54,6 @@ export function getThumbnailDataURL(templateId) {
 
   return template ? template.image : null;
 }
-
 
 /* ---------------- EXPORT TEMPLATE LIST ---------------- */
 

@@ -20,7 +20,7 @@ const Navbar = () => {
       {/* Title */}
       <div className="flex flex-col">
         <h1 className="text-lg sm:text-xl font-bold tracking-tight"
-            style={{ background: 'linear-gradient(135deg, #fff, #a5b4fc)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            style={{ background: 'linear-gradient(135deg, #1e293b, #6366f1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
           Photo Template Generator
         </h1>
         <p className="text-xs hidden sm:block" style={{ color: 'var(--text-muted)' }}>

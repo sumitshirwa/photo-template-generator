@@ -34,20 +34,21 @@ const TemplateSidebar = ({ activeTemplate, onSelectTemplate }) => {
             }`}
             title={tpl.name}
           >
-            <div className="w-[72px] h-[72px] lg:w-[80px] lg:h-[80px] rounded-lg overflow-hidden flex items-center justify-center"
-                 style={{ background: 'rgba(255,255,255,0.03)' }}>
+            <div className="w-[72px] h-[72px] lg:w-[88px] lg:h-[88px] rounded-lg overflow-hidden flex items-center justify-center"
+                 style={{ background: 'rgba(0,0,0,0.03)' }}>
               {thumbnails[tpl.id] ? (
                 <img
                   src={thumbnails[tpl.id]}
                   alt={tpl.name}
                   className="w-full h-full object-contain"
                   draggable={false}
+                  loading="lazy"
                 />
               ) : (
                 <span className="text-2xl">{tpl.icon}</span>
               )}
             </div>
-            <span className="text-xs font-medium" style={{ color: activeTemplate === tpl.id ? '#a5b4fc' : 'var(--text-secondary)' }}>
+            <span className="text-xs font-medium" style={{ color: activeTemplate === tpl.id ? 'var(--accent-primary)' : 'var(--text-secondary)' }}>
               {tpl.name}
             </span>
           </button>

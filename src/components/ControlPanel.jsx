@@ -19,7 +19,8 @@ const ControlPanel = ({
 
   /** Download the exported image */
   const handleDownload = useCallback(() => {
-    const dataURL = onExport(exportFormat === 'jpg' ? 'jpeg' : 'png');
+    const format = exportFormat === 'jpg' ? 'jpeg' : 'png';
+    const dataURL = onExport(format);
     if (!dataURL) return;
 
     const link = document.createElement('a');
@@ -37,7 +38,6 @@ const ControlPanel = ({
     if (!dataURL) return;
 
     try {
-      // Convert data URL to blob
       const res = await fetch(dataURL);
       const blob = await res.blob();
       const file = new File([blob], 'photo-template.png', { type: 'image/png' });
@@ -54,10 +54,10 @@ const ControlPanel = ({
           text: 'Check out my framed photo!',
         });
       } else {
-        // Fallback: copy data URL to clipboard
-        await navigator.clipboard.writeText(dataURL);
+        // Fallback: show user-friendly message instead of copying raw data URL
         setShowSuccess(true);
-        setTimeout(() => setShowSuccess(false), 2000);
+        setTimeout(() => setShowSuccess(false), 2500);
+        alert('Sharing is not supported on this browser. Please use the Download button instead.');
       }
     } catch (err) {
       if (err.name !== 'AbortError') {
@@ -77,7 +77,7 @@ const ControlPanel = ({
               <span className="text-xs font-medium flex items-center gap-1.5" style={{ color: 'var(--text-secondary)' }}>
                 🔍 Zoom
               </span>
-              <span className="text-xs font-mono px-2 py-0.5 rounded-md" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}>
+              <span className="text-xs font-mono px-2 py-0.5 rounded-md" style={{ background: 'rgba(0,0,0,0.04)', color: 'var(--text-muted)' }}>
                 {zoom}%
               </span>
             </label>
@@ -96,7 +96,7 @@ const ControlPanel = ({
               <span className="text-xs font-medium flex items-center gap-1.5" style={{ color: 'var(--text-secondary)' }}>
                 🔄 Rotate
               </span>
-              <span className="text-xs font-mono px-2 py-0.5 rounded-md" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}>
+              <span className="text-xs font-mono px-2 py-0.5 rounded-md" style={{ background: 'rgba(0,0,0,0.04)', color: 'var(--text-muted)' }}>
                 {rotation}°
               </span>
             </label>
@@ -113,9 +113,9 @@ const ControlPanel = ({
       )}
 
       {/* Actions row */}
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
         {/* Format toggle */}
-        <div className="flex items-center gap-1 rounded-lg p-1" style={{ background: 'rgba(255,255,255,0.04)' }}>
+        <div className="flex items-center gap-1 rounded-lg p-1" style={{ background: 'rgba(0,0,0,0.04)' }}>
           {['png', 'jpg'].map((fmt) => (
             <button
               key={fmt}
@@ -123,7 +123,7 @@ const ControlPanel = ({
               className={`text-xs font-semibold px-3 py-1.5 rounded-md uppercase transition-all duration-200 ${
                 exportFormat === fmt
                   ? 'text-white'
-                  : 'hover:bg-white/5'
+                  : 'hover:bg-white/10'
               }`}
               style={
                 exportFormat === fmt
@@ -137,7 +137,7 @@ const ControlPanel = ({
         </div>
 
         {/* Spacer */}
-        <div className="flex-1" />
+        <div className="flex-1 min-w-0" />
 
         {/* Action buttons */}
         <GradientButton
@@ -172,7 +172,7 @@ const ControlPanel = ({
       {showSuccess && (
         <div className="mt-3 text-center animate-fade-in">
           <span className="text-xs font-medium px-4 py-2 rounded-full"
-                style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#4ade80', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
+                style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#16a34a', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
             ✅ Done! Image saved successfully.
           </span>
         </div>

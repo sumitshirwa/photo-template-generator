@@ -1,9 +1,4 @@
-/**
- * App - Root application component.
- * Composes all components: Animated background, Navbar, TemplateSidebar,
- * CanvasEditor, ImageUploader, ControlPanel, and Footer.
- */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import AnimatedBackground from './components/AnimatedBackground';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -31,14 +26,64 @@ const App = () => {
 
   const [activeTemplate, setActiveTemplate] = useState(templates[0].id);
 
-  // Set initial template when canvas is ready
   useEffect(() => {
     if (isReady) {
       setTemplate(activeTemplate);
     }
-  }, [isReady]); // eslint-disable-line react-hooks/exhaustive-deps
+    // Only run when canvas becomes ready
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isReady]);
 
-  /** Handle template selection */
+  /* 3D PARALLAX - uses ref-based approach */
+  const mainRef = useRef(null);
+
+  useEffect(() => {
+    if (window.innerWidth < 768) return;
+
+    const mainEl = mainRef.current;
+    if (!mainEl) return;
+
+    const handleMouseMove = (e) => {
+      const cards = mainEl.querySelectorAll('.glass');
+      cards.forEach((card) => {
+        const rect = card.getBoundingClientRect();
+        if (
+          e.clientX < rect.left || e.clientX > rect.right ||
+          e.clientY < rect.top || e.clientY > rect.bottom
+        ) return;
+
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = (y - centerY) / 25;
+        const rotateY = (centerX - x) / 25;
+
+        card.style.transform = `
+          perspective(1200px)
+          rotateX(${rotateX}deg)
+          rotateY(${rotateY}deg)
+          scale(1.015)
+        `;
+      });
+    };
+
+    const handleMouseLeave = (e) => {
+      const cards = mainEl.querySelectorAll('.glass');
+      cards.forEach((card) => {
+        card.style.transform = '';
+      });
+    };
+
+    mainEl.addEventListener('mousemove', handleMouseMove);
+    mainEl.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      mainEl.removeEventListener('mousemove', handleMouseMove);
+      mainEl.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
+
   const handleSelectTemplate = useCallback(
     (templateId) => {
       setActiveTemplate(templateId);
@@ -47,7 +92,6 @@ const App = () => {
     [setTemplate]
   );
 
-  /** Handle image upload */
   const handleImageUpload = useCallback(
     (dataURL) => {
       addUserImage(dataURL);
@@ -55,25 +99,23 @@ const App = () => {
     [addUserImage]
   );
 
-  /** Handle reset */
   const handleReset = useCallback(() => {
     reset();
   }, [reset]);
 
   return (
     <div className="relative min-h-screen flex flex-col">
-      {/* Animated aurora background */}
       <AnimatedBackground />
 
-      {/* Main content layer */}
       <div className="relative z-10 flex flex-col min-h-screen">
-        {/* Navbar */}
         <Navbar />
 
-        {/* Main editor area */}
-        <main className="flex-1 flex flex-col lg:flex-row gap-4 sm:gap-6 p-4 sm:p-6 max-w-7xl mx-auto w-full">
-          {/* Left sidebar - Template selection */}
-          <aside className="lg:w-[140px] flex-shrink-0">
+        <main
+          ref={mainRef}
+          className="flex-1 flex flex-col lg:flex-row gap-4 sm:gap-6 p-4 sm:p-6 max-w-7xl mx-auto w-full"
+        >
+          {/* Sidebar */}
+          <aside className="lg:w-[160px] flex-shrink-0">
             <div className="glass p-3 sm:p-4 lg:sticky lg:top-20">
               <TemplateSidebar
                 activeTemplate={activeTemplate}
@@ -82,18 +124,19 @@ const App = () => {
             </div>
           </aside>
 
-          {/* Center - Canvas and controls */}
+          {/* Main Editor */}
           <div className="flex-1 flex flex-col gap-4 sm:gap-5 min-w-0">
-            {/* Upload zone (shows when no image) or change photo button */}
+
+            {/* Upload */}
             <ImageUploader
               onImageUpload={handleImageUpload}
               hasImage={hasImage}
             />
 
-            {/* Canvas editor */}
+            {/* Canvas */}
             <CanvasEditor initCanvas={initCanvas} />
 
-            {/* Control panel */}
+            {/* Controls — NO glass wrapper here, ControlPanel has its own */}
             <ControlPanel
               hasImage={hasImage}
               zoom={zoom}
@@ -103,10 +146,10 @@ const App = () => {
               onExport={exportAsDataURL}
               onReset={handleReset}
             />
+
           </div>
         </main>
 
-        {/* Footer */}
         <Footer />
       </div>
     </div>
