@@ -35,6 +35,12 @@ const templateDefinitions = [
     image: "/templates/template4.png",
     icon: "/templates/template4.png",
   },
+  {
+    id: "Template 5",
+    name: "Template 5",
+    image: "/templates/template5.png",
+    icon: "/templates/template5.png",
+  },
 ];
 
 /** Get the full-size frame image URL for a template */
