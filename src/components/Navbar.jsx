@@ -20,7 +20,7 @@ const Navbar = memo(() => {
       {/* Your Custom Logo */}
       <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md">
         <img
-          src="https://i.postimg.cc/C5k8ZfMp/IMG-20250910-134440-951.webp"
+          src="https://i.postimg.cc/brJMppqR/file-00000000654072088322fbeba026119e.png"
           alt="Logo"
           className="w-full h-full object-cover"
         />
